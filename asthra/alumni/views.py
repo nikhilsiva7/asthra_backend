@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Alumni,JobBoard,Application,Skill
-from .serializers import AlumniSerializer,JobBoardSerializer,ApplicationSerializer,SkillSerializer
+from .models import Alumni,JobBoard,Application,Skill,Mentor
+from .serializers import AlumniSerializer,JobBoardSerializer,ApplicationSerializer,SkillSerializer,MentorSerializer
 from rest_framework import viewsets
 # Create your views here.
 
@@ -19,4 +19,8 @@ class ApplicationViewSet(viewsets.ModelViewSet):
 class SkillViewSet(viewsets.ModelViewSet):
     queryset=Skill.objects.all()
     serializer_class=SkillSerializer
+
+class MentorViewSet(viewsets.ModelViewSet):
+    queryset=Mentor.objects.all()
+    serializer_class=MentorSerializer
 

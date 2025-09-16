@@ -65,8 +65,8 @@ class Feedback(models.Model):
     ('WEBSITE', 'Website Improvement'),
     ('EVENT', 'Event Suggestions'),
     ('ISSUE', 'Any Issues'),
-    ('OTHER', 'Other'),
-]
+    ('OTHER', 'Other'), 
+    ]
 
     subject=models.TextField(max_length=500)
     category=models.CharField(choices=category_choices)
