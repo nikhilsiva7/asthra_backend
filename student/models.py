@@ -5,7 +5,7 @@ from alumni.models import Mentor
 
 class Student(models.Model):
     name=models.CharField(max_length=100)
-    year=models.IntegerField()
+    year=models.IntegerField(max_length=4)
     skills=models.ManyToManyField('Skill',blank=True)
     def __str__(self):
         return self.name
