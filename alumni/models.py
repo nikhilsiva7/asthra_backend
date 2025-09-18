@@ -35,7 +35,6 @@ class Alumni(models.Model):
     skills = models.ManyToManyField(Skill, related_name="alumni")
     experience = models.IntegerField()
     connections = models.IntegerField()
-
     mobile_number = models.CharField(
         max_length=15,
         unique=True,
