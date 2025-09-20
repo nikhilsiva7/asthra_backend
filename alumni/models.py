@@ -87,3 +87,9 @@ class Application(models.Model):
     alumni_id=models.ForeignKey(Alumni,on_delete=models.CASCADE)
     job_id=models.ForeignKey(JobBoard,on_delete=models.CASCADE)
     status=models.CharField(max_length=100)
+
+
+class SuccessStory(models.Model):
+    title=models.CharField(max_length=100)
+    description=models.TextField(max_length=500)
+    alumni_id=models.ForeignKey(Alumni,on_delete=models.CASCADE)
