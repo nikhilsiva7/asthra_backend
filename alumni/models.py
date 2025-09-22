@@ -26,15 +26,16 @@ class Alumni(models.Model):
         ("F", "Female"),
         ("O", "Other"),
     ]
-
     f_name = models.CharField(max_length=100)
     l_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     passed_year = models.IntegerField()
+    branch=models.CharField()
     job_role = models.CharField(max_length=100)
     skills = models.ManyToManyField(Skill, related_name="alumni")
     experience = models.IntegerField()
     connections = models.IntegerField()
+    password=models.CharField(max_length=100)
 
     mobile_number = models.CharField(
         max_length=15,
