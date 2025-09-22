@@ -9,9 +9,7 @@ router.register(r'skill', SkillViewSet)
 router.register(r'mentor', MentorViewSet)
 router.register(r"forum", ForumViewSet)
 router.register(r"feedback", FeedbackViewSet)
-router.register(r"register", AlumniRegisterView)
-router.register(r"login", AlumniLoginView)
-router.register(r"logout", AlumniLogoutView)
+
 
 urlpatterns = [
     path('',include(router.urls)),

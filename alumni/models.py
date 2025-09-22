@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.contrib.auth.hashers import make_password,check_password
+from account.models import CustomUser
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -21,22 +22,18 @@ class Mentor(models.Model):
 
 
 class Alumni(models.Model):
-    GENDER_CHOICES = [
-        ("M", "Male"),
-        ("F", "Female"),
-        ("O", "Other"),
-    ]
+    GENDER_CHOICES = [("M", "Male"), ("F", "Female"), ("O", "Other")]
+
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,null=True, blank=True)
     f_name = models.CharField(max_length=100)
     l_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     passed_year = models.IntegerField()
-    branch=models.CharField()
+    branch = models.CharField(max_length=100)
     job_role = models.CharField(max_length=100)
     skills = models.ManyToManyField(Skill, related_name="alumni")
     experience = models.IntegerField()
     connections = models.IntegerField()
-    password=models.CharField(max_length=100)
-
     mobile_number = models.CharField(
         max_length=15,
         unique=True,
@@ -44,13 +41,6 @@ class Alumni(models.Model):
     )
     linkedin_profile = models.URLField(max_length=200, blank=True, null=True)
     working_company = models.CharField(max_length=100, blank=True, null=True)
-
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
-        self.save()
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password)
 
     def __str__(self):
         return f"{self.f_name} {self.l_name}"

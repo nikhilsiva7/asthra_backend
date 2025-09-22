@@ -20,7 +20,7 @@ from .views import RegisterView,LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include('alumni.urls')),
+    path('alumni/',include('alumni.urls')),
     path('account/',include("account.urls")),
     path('student/',include("student.urls")),
      

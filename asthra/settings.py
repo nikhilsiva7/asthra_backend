@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'alumni','student','donation','staff','account',
-    'rest_framework','corsheaders','oauth2_provider'
+    'rest_framework','corsheaders',
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -101,7 +101,7 @@ DATABASES = {
         
     }
 }
-AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "account.CustomUser"
 
 
 # Password validation
