@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     'rest_framework','corsheaders','oauth2_provider'
 ]
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",  # ✅ use sessions
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",  # default: require auth
+    ],
 }
 
 MIDDLEWARE = [
@@ -60,6 +63,10 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'asthra.urls'
 CORS_ALLOW_CREDENTIALS=True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://yourfrontend.com"
+]
 
 TEMPLATES = [
     {

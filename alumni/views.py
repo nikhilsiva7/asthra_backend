@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from .models import Alumni,JobBoard,Application,Skill,Mentor,Forum,Feedback
 from .serializers import AlumniSerializer,JobBoardSerializer,ApplicationSerializer,SkillSerializer,MentorSerializer,FeedbackSerializer,ForumSerializer,AlumniLoginSerializer,AlumniRegisterSerializer
-from rest_framework import viewsets,status
+from rest_framework import viewsets,status,permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth import login,logout
 # Create your views here.
 
 class AlumniViewSet(viewsets.ModelViewSet):
@@ -35,22 +36,44 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     serializer_class=FeedbackSerializer
 
 class AlumniRegisterView(APIView):
+    permission_classes = [permissions.AllowAny]  # allow signup without login
+
     def post(self, request):
         serializer = AlumniRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            alumni = serializer.save()
-            return Response({"message": "Registration successful", "id": alumni.id}, status=status.HTTP_201_CREATED)
+            user = serializer.save()
+            login(request, user)  # 🔑 start session
+            return Response(
+                {
+                    "message": "User registered & logged in successfully",
+                    "username": user.username,
+                    "role": user.role,
+                },
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AlumniLoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request):
         serializer = AlumniLoginSerializer(data=request.data)
         if serializer.is_valid():
-            alumni = serializer.validated_data
-            return Response({
-                "message": "Login successful",
-                "alumni_id": alumni.id,
-                "name": f"{alumni.f_name} {alumni.l_name}",
-            })
+            user = serializer.validated_data
+            login(request, user)  # 🔑 start session
+            return Response(
+                {
+                    "message": "Login successful",
+                    "username": user.username,
+                    "role": user.role,
+                },
+                status=status.HTTP_200_OK,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AlumniLogoutView(APIView):
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)

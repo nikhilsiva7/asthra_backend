@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import AlumniViewSet,JobBoardViewSet,ApplicationViewSet,SkillViewSet,MentorViewSet,ForumViewSet,FeedbackViewSet,AlumniRegisterView,AlumniLoginView
+from .views import AlumniViewSet,JobBoardViewSet,ApplicationViewSet,SkillViewSet,MentorViewSet,ForumViewSet,FeedbackViewSet,AlumniRegisterView,AlumniLoginView,AlumniLogoutView
 from rest_framework.routers import DefaultRouter
 router=DefaultRouter()
 router.register(r'alumni', AlumniViewSet)
@@ -11,6 +11,7 @@ router.register(r"forum", ForumViewSet)
 router.register(r"feedback", FeedbackViewSet)
 router.register(r"register", AlumniRegisterView)
 router.register(r"login", AlumniLoginView)
+router.register(r"logout", AlumniLogoutView)
 
 urlpatterns = [
     path('',include(router.urls)),
