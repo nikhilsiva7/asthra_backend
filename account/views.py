@@ -6,25 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from account.models import CustomUser
 from account.serializers import RegisterSerializer, UserSerializer
 from alumni.models import Alumni, Skill
-
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import login
-from account.models import CustomUser
-from account.serializers import UserSerializer
-from alumni.models import Alumni, Skill
-
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import login
-from account.models import CustomUser
-from account.serializers import UserSerializer
-from alumni.models import Alumni, Skill
-
+from django.contrib.auth import get_user_model
 class RegisterAlumniView(APIView):
     permission_classes = [AllowAny]
 
@@ -80,20 +62,24 @@ class RegisterAlumniView(APIView):
             alumni.skills.add(skill)
 
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        user = authenticate(
-            request,
-            username=request.data.get('username'),
-            password=request.data.get('password')
-        )
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        try:
+            user_obj = get_user_model().objects.get(email=email)
+        except get_user_model().DoesNotExist:
+            return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user = authenticate(request, username=user_obj.username, password=password)
         if user:
             login(request, user)
             return Response(UserSerializer(user).data)
-        return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
+        return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
