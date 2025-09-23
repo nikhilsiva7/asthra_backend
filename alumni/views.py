@@ -5,6 +5,7 @@ from rest_framework import viewsets,status,permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import login,logout
+
 # Create your views here.
 
 class AlumniViewSet(viewsets.ModelViewSet):
@@ -37,6 +38,8 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
 class AlumniRegisterView(APIView):
     permission_classes = [permissions.AllowAny]  # allow signup without login
+
+        
 
     def post(self, request):
         serializer = AlumniRegisterSerializer(data=request.data)

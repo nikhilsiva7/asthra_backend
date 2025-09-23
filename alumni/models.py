@@ -21,13 +21,11 @@ class Mentor(models.Model):
         return self.name
 
 
-class Alumni(models.Model):
-    GENDER_CHOICES = [("M", "Male"), ("F", "Female"), ("O", "Other")]
 
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,null=True, blank=True)
-    f_name = models.CharField(max_length=100)
-    l_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+
+class Alumni(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=100)
     passed_year = models.IntegerField()
     branch = models.CharField(max_length=100)
     job_role = models.CharField(max_length=100)
@@ -43,7 +41,7 @@ class Alumni(models.Model):
     working_company = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.f_name} {self.l_name}"
+        return self.name
 
 
 class Forum(models.Model):
