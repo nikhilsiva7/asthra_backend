@@ -7,10 +7,22 @@ from account.models import CustomUser
 from account.serializers import RegisterSerializer, UserSerializer
 from alumni.models import Alumni, Skill
 
+from django.db.models import Q
+
 class RegisterAlumniView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        # Check for existing user with same email or username
+        email = request.data.get('email')
+        
+
+        if CustomUser.objects.filter(Q(email=email)).exists():
+            return Response(
+                {'error': 'An account with this email  already exists.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         user_serializer = RegisterSerializer(data=request.data)
         if user_serializer.is_valid():
             user = user_serializer.save()
@@ -38,8 +50,6 @@ class RegisterAlumniView(APIView):
 
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
